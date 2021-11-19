@@ -53,6 +53,25 @@ Learning Practices of NodeJS Basics
 - Without diving in depth of JavaScript if someone starts Node, he may face conceptual problems.
 - Node.js is not suited for CPU-intensive tasks. It is suited for I/O stuff only (like web servers).
 
+### Callbacks
+- An asynchronous equivalent for a function.
+- A callback function is called at the completion of a given task
+
+Example:
+```
+var callbackFunction = function(data) {
+  console.log('Task Status: '+ data);
+};
+
+var processAction = function(callback) {
+  callback('Success');
+};
+```
+Use above function as:
+```
+processAction(callbackFunction);
+```
+
 ### Disclaimer: Above definition and information has been collected from various website and web articles etc. This information is only for education and learning purpose. Don't use it for any commerical purpose in any form.
 
 ### ThankYou

@@ -1,0 +1,22 @@
+{
+  "name": "in.sarangal.nodejs.learning",
+  "version": "0.0.1",
+  "description": "This project is created to learn NodeJS",
+  "main": "main.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "keywords": [
+    "NodeJS",
+    "JavaScript"
+  ],
+  "author": "Rajat Sarangal",
+  "license": "ISC",
+  "dependencies": {
+    "cli-color": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}

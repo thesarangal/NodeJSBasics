@@ -86,35 +86,117 @@ processAction(callbackFunction);
 
 #### Example:
 ```
-fs.readdir(source, function (err, files) {
-  if (err) {
-    console.log('Error finding files: ' + err)
-  } else {
-    files.forEach(function (filename, fileIndex) {
-      console.log(filename)
-      gm(source + filename).size(function (err, values) {
-        if (err) {
-          console.log('Error identifying file size: ' + err)
-        } else {
-          console.log(filename + ' : ' + values)
-          aspect = (values.width / values.height)
-          widths.forEach(function (width, widthIndex) {
-            height = Math.round(width / aspect)
-            console.log('resizing ' + filename + 'to ' + height + 'x' + height)
-            this.resize(width, height).write(dest + 'w' + width + '_' + filename, function(err) {
-              if (err) console.log('Error writing file: ' + err)
-            })
-          }.bind(this))
-        }
-      })
-    })
-  }
-})
+firstFunction(args, function() {
+  secondFunction(args, function() {
+    thirdFunction(args, function() {
+      // And so on…
+    });
+  });
+});
 ```
 See the pyramid shape and all the }) at the end? This is affectionately known as callback hell.
 
 #### What’s worse than callback hell?
 Not fixing it.
+
+### Solution to Callback Hell
+- Write comments
+- Split functions into smaller functions
+- Using Promises
+- Using Async/await
+
+#### Problem
+```
+const makeBurger = nextStep => {
+  getBeef(function (beef) {
+    cookBeef(beef, function (cookedBeef) {
+      getBuns(function (buns) {
+        putBeefBetweenBuns(buns, beef, function(burger) {
+          nextStep(burger)
+        })
+      })
+    })
+  })
+}
+
+// Make and serve the burger
+makeBurger(function (burger) => {
+  serve(burger)
+})
+```
+
+### Solution: Write Comment
+```
+// Makes a burger
+// makeBurger contains four steps:
+//   1. Get beef
+//   2. Cook the beef
+//   3. Get buns for the burger
+//   4. Put the cooked beef between the buns
+//   5. Serve the burger (from the callback)
+// We use callbacks here because each step is asynchronous.
+//   We have to wait for the helper to complete the one step
+//   before we can start the next step
+
+const makeBurger = nextStep => {
+  getBeef(function(beef) {
+    cookBeef(beef, function(cookedBeef) {
+      getBuns(function(buns) {
+        putBeefBetweenBuns(buns, beef, function(burger) {
+          nextStep(burger);
+        });
+      });
+    });
+  });
+};
+```
+Now, When you see the callback hell, you get an understanding of why it has to be written this way.
+
+#### Solution: Split the callbacks into different functions
+```
+const getBeef = nextStep => {
+  const fridge = leftFright;
+  const beef = getBeefFromFridge(fridge);
+  nextStep(beef);
+};
+```
+```
+const cookBeef = (beef, nextStep) => {
+  const workInProgress = putBeefinOven(beef);
+  setTimeout(function() {
+    nextStep(workInProgress);
+  }, 1000 * 60 * 20);
+};
+```
+
+#### Solution: Use promises
+```
+const makeBurger = () => {
+  return getBeef()
+    .then(beef => cookBeef(beef))
+    .then(cookedBeef => getBuns(beef))
+    .then(bunsAndBeef => putBeefBetweenBuns(bunsAndBeef));
+};
+
+// Make and serve burger
+makeBurger().then(burger => serve(burger));
+```
+
+#### Solution: Use asynchronous functions
+```
+const makeBurger = async () => {
+  const beef = await getBeef();
+  const cookedBeef = await cookBeef(beef);
+  const buns = await getBuns();
+  const burger = await putBeefBetweenBuns(cookedBeef, buns);
+  return burger;
+};
+
+// Make and serve burger
+makeBurger().then(serve);
+```
+Reference: https://www.freecodecamp.org/news/how-to-deal-with-nested-callbacks-and-avoid-callback-hell-1bc8dc4a2012/
+
 
 
 ### Disclaimer: Above definition and information has been collected from various website and web articles etc. This information is only for education and learning purpose. Don't use it for any commerical purpose in any form.

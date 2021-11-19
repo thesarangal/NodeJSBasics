@@ -12,7 +12,7 @@ Learning Practices of NodeJS Basics
 
 - Ryan Dahl: Original Developer of Node.js in 2009
 - Built on Chrome’s V8 Javascript Engine
-- Chrome’s V8 JavaScript Engine + A C++ Program = Node.js
+- [Chrome’s V8 JavaScript Engine] + [C++ Program] = Node.js
 - Node.js is a C++ Program which running with Chrome’s V8 JavaScript Engine
 - Include File System and Operating System etc, which are not included in Core JavaScript
 - Not multi-threaded. It runs in a single thread with a callback concept.
@@ -52,3 +52,7 @@ Learning Practices of NodeJS Basics
 - Every time using a callback ends up with tons of nested callbacks.
 - Without diving in depth of JavaScript if someone starts Node, he may face conceptual problems.
 - Node.js is not suited for CPU-intensive tasks. It is suited for I/O stuff only (like web servers).
+
+### Disclaimer: Above definition and information has been collected from various website and web articles etc. This information is only for education and learning purpose. Don't use it for any commerical purpose in any form.
+
+### ThankYou

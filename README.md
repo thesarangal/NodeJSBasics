@@ -54,15 +54,21 @@ Learning Practices of NodeJS Basics
 - Node.js is not suited for CPU-intensive tasks. It is suited for I/O stuff only (like web servers).
 
 ### Callbacks
+- A callback function is called at the completion of a given task.
 - An asynchronous equivalent for a function.
-- A callback function is called at the completion of a given task
+- Callbacks are nothing but functions that take some time to produce a result.
+- Usually these async callbacks (async short for asynchronous) are used for accessing values from databases, downloading images, reading files etc.
+- As these take time to finish, we can neither proceed to next line because it might throw an error saying unavailable nor we can pause our program.
+- So we need to store the result and call back when it is complete.
 
-Example:
+#### Example:
 ```
+// Callback Function
 var callbackFunction = function(data) {
   console.log('Task Status: '+ data);
 };
 
+// A Function in which Callback Function is used
 var processAction = function(callback) {
   callback('Success');
 };
@@ -71,6 +77,45 @@ Use above function as:
 ```
 processAction(callbackFunction);
 ```
+
+### Callback Hell
+- Also known as Pyramid of Doom
+- An anti-pattern seen in code of asynchronous programming.
+- It is a slang term used to describe and unwieldy number of nested “if” statements or functions.
+- If you are not expecting your application logic to get too complex, a few callbacks seem harmless. But once your project requirements start to swell, you will quickly find yourself piling layers of nested callbacks. Congrats! Welcome to Callback Hell.
+
+#### Example:
+```
+fs.readdir(source, function (err, files) {
+  if (err) {
+    console.log('Error finding files: ' + err)
+  } else {
+    files.forEach(function (filename, fileIndex) {
+      console.log(filename)
+      gm(source + filename).size(function (err, values) {
+        if (err) {
+          console.log('Error identifying file size: ' + err)
+        } else {
+          console.log(filename + ' : ' + values)
+          aspect = (values.width / values.height)
+          widths.forEach(function (width, widthIndex) {
+            height = Math.round(width / aspect)
+            console.log('resizing ' + filename + 'to ' + height + 'x' + height)
+            this.resize(width, height).write(dest + 'w' + width + '_' + filename, function(err) {
+              if (err) console.log('Error writing file: ' + err)
+            })
+          }.bind(this))
+        }
+      })
+    })
+  }
+})
+```
+See the pyramid shape and all the }) at the end? This is affectionately known as callback hell.
+
+#### What’s worse than callback hell?
+Not fixing it.
+
 
 ### Disclaimer: Above definition and information has been collected from various website and web articles etc. This information is only for education and learning purpose. Don't use it for any commerical purpose in any form.
 
